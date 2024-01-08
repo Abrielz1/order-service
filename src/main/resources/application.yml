@@ -5,4 +5,4 @@ spring:
 app:
   kafka:
     kafkaMessageTopic: "message-topic_2"
-    kafkaMessageGroupId: "kafka-message-group-id"
+    kafkaMessageGroupId: "kafka-message-group-id-1"
