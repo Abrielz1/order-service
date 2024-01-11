@@ -9,5 +9,5 @@ public class KafkaMessage {
 
     private String product;
 
-    private Integer quantity;
+    private Long quantity;
 }

@@ -18,7 +18,7 @@ public class KafkaMessageListener {
 
     private final KafkaMessageService kafkaMessageService;
 
-    @KafkaListener(topics = "${app.kafka.kafkaMessageTopic",
+    @KafkaListener(topics = "message-topic",
                    groupId = "${app.kafka.kafkaMessageGroupId",
                    containerFactory =  "kafkaMessageConcurrentKafkaListenerContainerFactory")
     public void listen(@Payload KafkaMessage message,
