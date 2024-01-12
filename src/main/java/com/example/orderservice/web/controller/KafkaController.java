@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class KafkaController {
 
-    @Value("${app.kafka.kafkaMessageTopic")
+    @Value("${app.kafka.kafkaMessageTopic}")
     private String topicName;
 
     private final KafkaTemplate<String, KafkaMessage> kafkaTemplate;
