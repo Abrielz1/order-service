@@ -4,7 +4,8 @@ spring:
 
 app:
   kafka:
-    kafkaMessageTopic: "topic_two, topic_one"
+    topicToRead: topic_two
+    topicToWrite: topic_one
     kafkaMessageGroupId: "kafka-message-group-id"
 server:
   port: 8080
