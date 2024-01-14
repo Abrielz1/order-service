@@ -24,7 +24,6 @@ public class KafkaController {
     @PostMapping("/send")
      @ResponseStatus(HttpStatus.OK)
      public String sendMessage(@RequestBody KafkaMessage message) {
-     kafkaTemplate.send(topicName, message);
      return "Message were send to kafka";
      }
 }
