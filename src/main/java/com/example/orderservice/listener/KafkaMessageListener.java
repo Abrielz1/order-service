@@ -17,6 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class KafkaMessageListener {
 
+    //todo: выкинуть логику в сервис
+
 //    private final KafkaMessageService kafkaMessageService;
 
     private final KafkaTemplate<String, KafkaMessage> kafkaTemplate;
