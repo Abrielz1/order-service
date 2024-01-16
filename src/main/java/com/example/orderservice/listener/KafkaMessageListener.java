@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class KafkaMessageListener {
 
-    private final KafkaMessageService kafkaMessageService;
+//    private final KafkaMessageService kafkaMessageService;
 
     private final KafkaTemplate<String, KafkaMessage> kafkaTemplate;
 
