@@ -21,6 +21,4 @@ public class KafkaMessageService {
     public String print() {
         return messages.toString();
     }
-
-
 }
