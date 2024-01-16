@@ -27,6 +27,6 @@ public class KafkaController {
     @ResponseStatus(HttpStatus.OK)
     public void sendMessage(@RequestBody KafkaMessage message) {
         log.info("Message were send to kafka");
-        kafkaTemplate.send("${app.kafka.topicToRead}", message);
+        kafkaTemplate.send(topicName, message);
     }
 }
