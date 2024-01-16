@@ -17,4 +17,10 @@ public class KafkaMessageService {
     public void add(KafkaMessage message) {
         messages.add(message);
     }
+
+    public String print() {
+        return messages.toString();
+    }
+
+
 }

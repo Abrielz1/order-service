@@ -19,7 +19,7 @@ public class KafkaMessageListener {
 
     //todo: выкинуть логику в сервис
 
-//    private final KafkaMessageService kafkaMessageService;
+    private final KafkaMessageService kafkaMessageService;
 
     private final KafkaTemplate<String, KafkaMessage> kafkaTemplate;
 
@@ -35,13 +35,13 @@ public class KafkaMessageListener {
         log.info("Received message: {}", message);
         log.info("Key: {}; Partition: {}; Topic: {}; Timestamp: {}", key, partition, topic, timeStamp);
 
-  //      kafkaMessageService.add(message);
-        kafkaTemplate.send(topic, message);
+        kafkaMessageService.add(message);
+        System.out.println("messages list has: " + kafkaMessageService.print());
     }
 
     @KafkaListener(topics = "${app.kafka.topicToWrite}",
-            groupId = "${app.kafka.kafkaMessageGroupId}",
-            containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
+                   groupId = "${app.kafka.kafkaMessageGroupId}",
+                   containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
     public void send(@Payload KafkaMessage message,
                      @Header(value = KafkaHeaders.RECEIVED_KEY, required = false) UUID key,
                      @Header(value = KafkaHeaders.RECEIVED_TOPIC) String topic,
