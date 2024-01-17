@@ -19,15 +19,15 @@ public class KafkaMessageListener {
    private final KafkaMessageService kafkaMessageService;
 
     @KafkaListener(topics = "${app.kafka.topicToRead}",
-            groupId = "${app.kafka.kafkaMessageGroupId}",
-            containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
+                   groupId = "${app.kafka.kafkaMessageGroupId}",
+                   containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
     public void receive(@Payload KafkaMessageDTO message,
                         @Header(value = KafkaHeaders.RECEIVED_TOPIC) String topic) {
 
         log.info("Received message: {}", message);
-        log.info("Message: {}; Topic: {}", message, topic);
+        log.info("Message: {}; Topic: {}, Time: {}", message, topic, System.currentTimeMillis());
 
-        System.out.println("message: " + message);
+        System.out.println("message: " + message + " time received in ms:" + System.currentTimeMillis());
         kafkaMessageService.addDTO(message);
     }
 }
