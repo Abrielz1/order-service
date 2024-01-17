@@ -1,6 +1,7 @@
 package com.example.orderservice.service;
 
 import com.example.orderservice.model.KafkaMessage;
+import com.example.orderservice.model.KafkaMessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,14 @@ public class KafkaMessageService {
 
     private final List<KafkaMessage> messages = new ArrayList<>();
 
+    private final List<KafkaMessageDTO> messagesDTO = new ArrayList<>();
+
     public void add(KafkaMessage message) {
         messages.add(message);
+    }
+
+    public void addDTO(KafkaMessageDTO messageDTO) {
+        messagesDTO.add(messageDTO);
     }
 
     public String print() {

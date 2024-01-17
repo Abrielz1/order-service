@@ -1,6 +1,7 @@
 package com.example.orderservice.configuration;
 
 import com.example.orderservice.model.KafkaMessage;
+import com.example.orderservice.model.KafkaMessageDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -51,7 +52,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, KafkaMessage> kafkaMessageConsumerFactory(ObjectMapper objectMapper) {
+    public ConsumerFactory<String, KafkaMessageDTO> kafkaMessageConsumerFactory(ObjectMapper objectMapper) {
 
         Map<String, Object> config = new HashMap<>();
 
@@ -67,11 +68,11 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, KafkaMessage> kafkaMessageConcurrentKafkaListenerContainerFactory(
-            ConsumerFactory<String, KafkaMessage> kafkaMessageConsumerFactory
+    public ConcurrentKafkaListenerContainerFactory<String, KafkaMessageDTO> kafkaMessageConcurrentKafkaListenerContainerFactory(
+            ConsumerFactory<String, KafkaMessageDTO> kafkaMessageConsumerFactory
     ) {
 
-        ConcurrentKafkaListenerContainerFactory<String, KafkaMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, KafkaMessageDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(kafkaMessageConsumerFactory);
 
         return factory;
