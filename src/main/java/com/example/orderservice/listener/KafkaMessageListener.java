@@ -22,13 +22,12 @@ public class KafkaMessageListener {
                    groupId = "${app.kafka.kafkaMessageGroupId}",
                    containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
     public void listen(@Payload KafkaMessage message,
-                       @Header(value = KafkaHeaders.RECEIVED_KEY, required = false) UUID key,
                        @Header(value = KafkaHeaders.RECEIVED_TOPIC) String topic,
-                       @Header(value = KafkaHeaders.RECEIVED_PARTITION) Integer partition,
+                       @Header(value = KafkaHeaders.RECEIVED_PARTITION) String status,
                        @Header(value = KafkaHeaders.RECEIVED_TIMESTAMP) Long timeStamp) {
 
         log.info("Received message: {}", message);
-        log.info("Key: {}; Partition: {}; Topic: {}; Timestamp: {}", key, partition, topic, timeStamp);
+        log.info("Message: {}; Topic: {}; Status: {}; Timestamp: {}", message, topic, status, timeStamp);
 
         kafkaMessageService.add(message);
         System.out.println("messages list has: " + kafkaMessageService.print());
