@@ -1,6 +1,7 @@
 package com.example.orderservice.listener;
 
 import com.example.orderservice.model.KafkaMessage;
+import com.example.orderservice.model.KafkaMessageDTO;
 import com.example.orderservice.service.KafkaMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,27 +10,24 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import java.util.UUID;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class KafkaMessageListener {
 
-    private final KafkaMessageService kafkaMessageService;
+   private final KafkaMessageService kafkaMessageService;
 
-    @KafkaListener(topics = "${app.kafka.kafkaMessageTopic",
-                   groupId = "${app.kafka.kafkaMessageGroupId",
-                   containerFactory =  "kafkaMessageConcurrentKafkaListenerContainerFactory")
-    public void listen(@Payload KafkaMessage message,
-                       @Header(value = KafkaHeaders.RECEIVED_KEY, required = false) UUID key,
-                       @Header(value = KafkaHeaders.RECEIVED_TOPIC) String topic,
-                       @Header(value = KafkaHeaders.RECEIVED_PARTITION) Integer partition,
-                       @Header(value = KafkaHeaders.RECEIVED_TIMESTAMP) Long timeStamp) {
+    @KafkaListener(topics = "${app.kafka.topicToRead}",
+                   groupId = "${app.kafka.kafkaMessageGroupId}",
+                   containerFactory = "kafkaMessageConcurrentKafkaListenerContainerFactory")
+    public void receive(@Payload KafkaMessageDTO message,
+                        @Header(value = KafkaHeaders.RECEIVED_TOPIC) String topic) {
 
         log.info("Received message: {}", message);
-        log.info("Key: {}; Partition: {}; Topic: {}; Timestamp: {}", key, partition, topic, timeStamp);
+        log.info("Message: {}; Topic: {}, Time: {}", message, topic, System.currentTimeMillis());
 
-        kafkaMessageService.add(message);
+        System.out.println("message: " + message + " time received in ms:" + System.currentTimeMillis());
+        kafkaMessageService.addDTO(message);
     }
 }

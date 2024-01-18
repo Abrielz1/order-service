@@ -1,6 +1,7 @@
 package com.example.orderservice.configuration;
 
 import com.example.orderservice.model.KafkaMessage;
+import com.example.orderservice.model.KafkaMessageDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -9,6 +10,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -21,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EnableKafka
 public class KafkaConfiguration {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -49,13 +52,15 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, KafkaMessage> kafkaMessageConsumerFactory(ObjectMapper objectMapper) {
+    public ConsumerFactory<String, KafkaMessageDTO> kafkaMessageConsumerFactory(ObjectMapper objectMapper) {
 
         Map<String, Object> config = new HashMap<>();
 
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, KafkaMessageDTO.class.getName());
+        config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
         config.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaMessageGroupId);
         config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 
@@ -63,11 +68,11 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, KafkaMessage> kafkaMessageConcurrentKafkaListenerContainerFactory(
-            ConsumerFactory<String, KafkaMessage> kafkaMessageConsumerFactory
+    public ConcurrentKafkaListenerContainerFactory<String, KafkaMessageDTO> kafkaMessageConcurrentKafkaListenerContainerFactory(
+            ConsumerFactory<String, KafkaMessageDTO> kafkaMessageConsumerFactory
     ) {
 
-        ConcurrentKafkaListenerContainerFactory<String, KafkaMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, KafkaMessageDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(kafkaMessageConsumerFactory);
 
         return factory;
